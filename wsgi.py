@@ -1,20 +1,9 @@
-import os
-import sys
+from flask import Flask
+application = Flask(__name__)
 
-sys.path.insert(0, os.path.dirname(__file__) or '.')
+@application.route("/")
+def hello():
+    return "Hello World!"
 
-PY_DIR = os.path.join(os.environ['OPENSHIFT_HOMEDIR'], "python")
-
-virtenv = PY_DIR + '/virtenv/'
-
-PY_CACHE = os.path.join(virtenv, 'lib', os.environ['OPENSHIFT_PYTHON_VERSION'], 'site-packages')
-
-os.environ['PYTHON_EGG_CACHE'] = os.path.join(PY_CACHE)
-virtualenv = os.path.join(virtenv, 'bin/activate_this.py')
-
-try:
-    exec(open(virtualenv).read(), dict(__file__=virtualenv))
-except IOError:
-    pass
-
-from flaskapp import app as application
+if __name__ == "__main__":
+    application.run()
